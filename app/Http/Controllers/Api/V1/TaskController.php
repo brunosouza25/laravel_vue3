@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
 
-class TaskController extends Controller
+class TaskController extends \App\Http\Controllers\Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return Task::All();
     }
 
     /**

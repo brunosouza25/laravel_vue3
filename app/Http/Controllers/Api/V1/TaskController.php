@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class TaskController extends \App\Http\Controllers\Controller
      */
     public function index()
     {
-        return Task::All();
+        return Task::all()->toResourceCollection();
     }
 
     /**
@@ -36,7 +37,9 @@ class TaskController extends \App\Http\Controllers\Controller
      */
     public function show(Task $task)
     {
-        //
+//        return new TaskResource($task); posso fazer assim
+//        return TaskResource::make($task); //ou assim de forma estática, ambas são validas trazem o mesmo resultado
+        return $task->toResource(); //assim é de forma mais simples a partir do laravel 12
     }
 
     /**

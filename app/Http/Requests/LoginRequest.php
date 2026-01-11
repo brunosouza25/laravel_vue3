@@ -26,4 +26,9 @@ class LoginRequest extends FormRequest
             "password" => "required"
         ];
     }
+
+    public function messages(): array
+    {
+        return ["email.required" => "Email is required"];
+    }
 }

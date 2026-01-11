@@ -11,7 +11,7 @@ class TaskTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_can_get_list_of_tasks(): void
+    public function test_guest_can_get_list_of_tasks(): void
     {
         // Arrange
         $tasks = Task::factory()->count(2)->create();
@@ -27,7 +27,7 @@ class TaskTest extends TestCase
         ]);
     }
 
-    public function test_user_can_get_single_task(): void
+    public function test_guest_can_get_single_task(): void
     {
         // Arrange: criando a task
         $task = Task::factory()->create();
@@ -53,7 +53,7 @@ class TaskTest extends TestCase
     }
 
     // `POST /tasks` -> create a new task
-    public function test_user_can_create_a_task(): void
+    public function test_guest_can_create_a_task(): void
     {
         $response = $this->postJson("/api/v1/tasks", [
             "name" => "Test task",
@@ -66,7 +66,7 @@ class TaskTest extends TestCase
     }
     // `PUT /tasks/{id}` -> update existing task
 
-    public function test_user_can_update_task(): void
+    public function test_guest_can_update_task(): void
     {
         $task = Task::factory()->create();
 
@@ -74,7 +74,7 @@ class TaskTest extends TestCase
         $response->assertOk();
 
     }
-    public function test_user_cannot_update_task_with_invalid_data(): void
+    public function test_guest_cannot_update_task_with_invalid_data(): void
     {
         $task = Task::factory()->create();
 
@@ -84,7 +84,7 @@ class TaskTest extends TestCase
     }
     // `PATCH /tasks/{id}/complete` -> mark the task as completed or incomplete
 
-    public function test_user_can_toggle_task_completion(): void
+    public function test_guest_can_toggle_task_completion(): void
     {
         $task = Task::factory()->create();
 
@@ -93,7 +93,7 @@ class TaskTest extends TestCase
         $response->assertJsonFragment(["is_completed" => true]);
     }
 
-    public function test_user_cannot_toggle_completed_with_invalid_data(): void
+    public function test_guest_cannot_toggle_completed_with_invalid_data(): void
     {
         $task = Task::factory()->create();
 
@@ -104,7 +104,7 @@ class TaskTest extends TestCase
 
     // `DELETE /tasks/{id}` -> delete a task
 
-    public function test_user_can_delete_task(): void
+    public function test_guest_can_delete_task(): void
     {
         $task = Task::factory()->create();
 

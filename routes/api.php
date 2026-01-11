@@ -8,10 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\TaskController;
 
-Route::prefix("v1")->group(function () {
-    Route::apiResource("/tasks", TaskController::class);
-    Route::patch("/tasks/{task}/complete", CompleteTaskController::class);
-});
+Route::prefix("v1")->group(base_path("routes/api/v1.php"));
+Route::prefix("v2")->middleware("auth:sanctum")->group(base_path("routes/api/v2.php"));
 
 Route::prefix("auth")->group(function () {
    Route::post("/login", LoginController::class);

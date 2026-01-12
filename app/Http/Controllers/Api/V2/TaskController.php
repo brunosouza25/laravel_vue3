@@ -14,8 +14,13 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+//        Gate::authorize('viewAny', Task::class); essa seria uma autorização com gate
+        if ($request->user()->cannot('viewAny', Task::class)) {
+            abort(403);
+        }
+
 //        return TaskResource::collection(Task::all());
 //        return Task::all()->toResourceCollection();
         return request()->user()->tasks()->get()->toResourceCollection();
@@ -26,6 +31,9 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
+        if ($request->user()->cannot('create', Task::class)) {
+            abort(403);
+        }
 //        $task = Task::create($request->validated() + ['user_id' => $request->user()->id]);
         $task = $request->user()->tasks()->create($request->validated());
         return $task->toResource();
@@ -34,8 +42,13 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Task $task)
+    public function show(Task $task, Request $request)
     {
+
+//        Gate::authorize('view', $task); essa seria uma autorização com gate
+        if ($request->user()->cannot('view', $task)) {
+            abort(403);
+        }
 //        return new TaskResource($task); posso fazer assim
 //        return TaskResource::make($task); //ou assim de forma estática, ambas são validas trazem o mesmo resultado
         return $task->toResource(); //assim é de forma mais simples a partir do laravel 12
@@ -46,6 +59,10 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
+        if ($request->user()->cannot('update', $task)) {
+            abort(403);
+        }
+
         $task->update($request->validated());
 
         return $task->toResource();
@@ -54,8 +71,12 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy(Task $task, Request $request)
     {
+        if ($request->user()->cannot('delete', $task)) {
+            abort(403);
+        }
+
         $task->delete();
 
         return response()->noContent();

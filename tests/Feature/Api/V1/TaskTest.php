@@ -3,6 +3,7 @@
 namespace Tests\Feature\Api\V1;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -86,16 +87,23 @@ class TaskTest extends TestCase
 
     public function test_guest_can_toggle_task_completion(): void
     {
-        $task = Task::factory()->create();
+        $user = User::factory()->create();
+        $task = Task::factory()->create(["user_id" => $user->id]);
+
+        $this->actingAs($user);
 
         $response = $this->patchJson("/api/v1/tasks/{$task->id}/complete", ["is_completed" => true]);
+
         $response->assertOk();
         $response->assertJsonFragment(["is_completed" => true]);
     }
 
     public function test_guest_cannot_toggle_completed_with_invalid_data(): void
     {
-        $task = Task::factory()->create();
+        $user = User::factory()->create();
+        $task = Task::factory()->create(["user_id" => $user->id]);
+
+        $this->actingAs($user);
 
         $response = $this->patchJson("/api/v1/tasks/{$task->id}/complete", ["is_completed" => "yes"]);
         $response->assertStatus(422);

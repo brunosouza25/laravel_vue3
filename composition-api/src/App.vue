@@ -1,16 +1,15 @@
 <script>
-import { ref, reactive, toRef, toRefs } from "vue"
+import { computed, ref, reactive, toRef, toRefs } from "vue"
 export default {
     setup() {
-        const message = ref("hello");
-        const quantity = ref(1);
         const item = reactive({
             name: "product 1",
-            price: 10
+            price: 10,
+            quantity: 1
         })
 
-        const increment = () => quantity.value++
-        const decrement = () => quantity.value--
+        const increment = () => item.quantity++
+        const decrement = () => item.quantity--
 
         const swapProduct = () => {
             item.name = "product A"
@@ -25,7 +24,7 @@ export default {
         //
         // console.log("nameref:", nameRef.value)
 
-        const { name, price } = toRefs(item)
+        const { name, price, quantity } = toRefs(item)
 
         // const itemRefs = toRefs(item)
         // console.log("name:", itemRefs.name.value)
@@ -35,14 +34,16 @@ export default {
         // console.log("name:", itemRefs.name.value)
         // console.log("price:", itemRefs.price.value)
 
+        const total = computed(() => item.price * quantity.value)
+
         return {
-            message,
             quantity,
             increment,
             decrement,
             name,
             price,
-            swapProduct
+            swapProduct,
+            total
         }
     }
 }
@@ -52,8 +53,11 @@ export default {
     <h1>{{ name }} : {{ price }}</h1>
     <h2>{{ quantity }}</h2>
     <button @click="swapProduct">Swap</button>
+    <button @click="price++">increment price</button>
     <button @click="increment">+</button>
     <button @click="decrement">-</button>
+
+    <h3>Total: {{ total }}</h3>
 
 
 </template>

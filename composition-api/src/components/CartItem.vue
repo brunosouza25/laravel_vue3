@@ -1,5 +1,5 @@
 <script>
-import { computed, reactive, toRefs } from "vue"
+import { computed, reactive, toRefs, onMounted, onUnmounted, onUpdated } from "vue"
 export default {
     props: {
       cartItem: {
@@ -19,6 +19,18 @@ export default {
         const total = computed(() => item.price * quantity.value)
 
         const remove = () => emit("remove", item)
+
+        onMounted(() => {
+            console.log("component mounted.")
+        })
+
+        onUpdated(() => {
+            console.log("component updated.")
+        })
+
+        onUnmounted(() => {
+            console.log("component unmonted.")
+        })
 
         return {
             remove,

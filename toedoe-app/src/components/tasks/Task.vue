@@ -4,11 +4,11 @@
             class="d-flex justify-content-start align-items-center"
         >
             <input
-                class="form-check-input mt-0 completed"
-                type="checkbox"
+                class="form-check-input mt-0" :class="completedClass"
+                type="checkbox" :checked="task.is_completed"
             />
             <div
-                class="ms-2 flex-grow-1"
+                class="ms-2 flex-grow-1" :class="completedClass"
                 title="Double click the text to edit or remove"
             >
                 <!-- <div class="relative">
@@ -32,10 +32,12 @@
 <script setup>
 import IconPencil from "@/components/icons/IconPencil.vue"
 import IconTrash from "@/components/icons/IconTrash.vue"
+import {computed} from "vue";
 
-defineProps({
+const props = defineProps({
     task: Object
 })
+const completedClass = computed(() => props.task.is_completed ? "completed" : "")
 </script>
 
 <style scoped>

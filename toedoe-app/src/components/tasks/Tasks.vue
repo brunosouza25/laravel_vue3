@@ -1,7 +1,9 @@
 <template>
     <div class="card mt-2" v-if="tasks.length && show">
         <ul class="list-group list-group-flush">
-            <Task v-for="task in tasks" :task="task" :key="task.id" @updated="$event => $emit('updated', $event)"/>
+            <Task v-for="task in tasks" :task="task" :key="task.id"
+                  @completed="$emit('completed', $event)"
+                  @updated="$event => $emit('updated', $event)"/>
         </ul>
     </div>
 </template>

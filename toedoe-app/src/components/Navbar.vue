@@ -23,7 +23,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a href="my-tasks.html" class="nav-link">Tasks</a>
+                        <router-link to="/tasks" class="nav-link">Tasks</router-link>
+                        <router-link :to="{ name: 'tasks' }" class="nav-link">Tasks</router-link>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">Summary</a>
@@ -31,17 +32,13 @@
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a href="#" class="btn btn-outline-secondary ms-2"
-                        >Login</a
-                        >
+                        <router-link :to="{ name: 'login' }" class="btn btn-outline-secondary ms-2">Login</router-link>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="btn btn-danger ms-2">Register</a>
+                        <router-link :to="{ name: 'register' }" class="btn btn-danger ms-2">Register</router-link>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="btn btn-outline-secondary ms-2"
-                        >Logout</a
-                        >
+                        <a href="#" class="btn btn-outline-secondary ms-2">Logout</a>
                     </li>
                 </ul>
             </div>

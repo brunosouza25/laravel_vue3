@@ -12,7 +12,7 @@
             <button
                 class="navbar-toggler"
                 type="button"
-                data-bs-toggle="collapse"
+                data-bs-toggle="collapse"l
                 data-bs-target="#navbarNav"
                 aria-controls="navbarNav"
                 aria-expanded="false"
@@ -23,8 +23,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <router-link to="/tasks" class="nav-link">Tasks</router-link>
-                        <router-link :to="{ name: 'tasks' }" class="nav-link">Tasks</router-link>
+<!--                        <router-link :to="{ name: 'tasks' }" class="nav-link">Tasks</router-link>-->
+                        <a href="#" @click.prevent="$router.push('/tasks')" class="nav-link">Tasks</a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">Summary</a>

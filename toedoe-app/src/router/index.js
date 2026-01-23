@@ -3,5 +3,6 @@ import routes from "./routes.js"
 
 export default createRouter({
     routes,
-    history: createWebHistory()
+    history: createWebHistory(),
+    linkActiveClass: "active"
 })

@@ -31,7 +31,7 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
-                    <template v-if="!store.isLogged">
+                    <template v-if="!store.isLoggedIn">
                         <li class="nav-item">
                             <router-link :to="{ name: 'login' }" class="btn btn-outline-secondary ms-2">Login</router-link>
                         </li>
@@ -48,7 +48,7 @@
                             <a class="nav-link dropdown-toggle" :class="toggleClass"  @click.prevent="toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ store.user.name }}
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu" :class="toggleClass">
                                 <li><a href="#" class="dropdown-item" :class="toggleClass" @click.prevent="logout">Logout</a></li>
                             </ul>
                         </li>

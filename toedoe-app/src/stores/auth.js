@@ -30,7 +30,7 @@ export const useAuthStore = defineStore("authStore", () => {
         })
     }
 
-    const handleLoggout = async (newUser) => {
+    const handleLogout = async (newUser) => {
         await logout()
         user.value = null
     }
@@ -41,6 +41,6 @@ export const useAuthStore = defineStore("authStore", () => {
         fetchUser,
         handleLogin,
         handleRegister,
-        handleLoggout
+        handleLogout
     }
 })

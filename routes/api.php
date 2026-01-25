@@ -6,9 +6,9 @@ use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\CompleteTaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\TaskController;
+//use App\Http\Controllers\Api\V1\TaskController;
 
-Route::prefix("v1")->group(base_path("routes/api/v1.php"));
+//Route::prefix("v1")->group(base_path("routes/api/v1.php"));
 Route::prefix("v2")->middleware("auth:sanctum")->group(base_path("routes/api/v2.php"));
 
 Route::prefix("auth")->group(function () {

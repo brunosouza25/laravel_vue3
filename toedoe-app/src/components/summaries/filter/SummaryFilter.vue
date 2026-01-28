@@ -1,9 +1,23 @@
+<template>
+    <Dropdown>
+        <template v-slot:trigger="{ toggleClass, toggle }">
+            <DropdownTrigger class="btn btn-outline-secondary" :class="toggleClass" type="button" @click="toggle">{{ activeFilter }}</DropdownTrigger>
+        </template>
+        <template v-slot:menu="{ toggle }">
+            <DropdownItem v-for="(value, key) in filterItems" :key="key" href="#" @click.prevent="toggle(), filter(key)">
+                <FilterItem :text="value" :selected="key === activeFilterKey"/>
+            </DropdownItem>
+        </template>
+    </Dropdown>
+</template>
+
 <script setup>
-import { computed } from "vue"
+import {computed, onMounted, ref} from "vue"
 import { startOfWeek, endOfWeek, subWeeks, format } from "date-fns"
 import Dropdown from "../../dropdown/Dropdown.vue"
 import DropdownItem from "../../dropdown/DropdownItem.vue"
 import DropdownTrigger from "../../dropdown/DropdownTrigger.vue"
+import FilterItem from "@/components/summaries/filter/FilterItem.vue";
 
 
 const filterItems = computed(() => {
@@ -44,15 +58,17 @@ const filterItems = computed(() => {
     }
 })
 
+const emit = defineEmits(["update"])
+
+const filter = (period) => {
+    activeFilterKey.value = period
+    emit("update", activeFilter.value)
+}
+
+onMounted(() => emit("update", activeFilter.value))
+
+const activeFilterKey = ref("lastweek")
+const activeFilter = computed(() => filterItems.value[activeFilterKey.value] || filterItems.value.thisweek)
+
 </script>
 
-<template>
-    <Dropdown>
-        <template v-slot:trigger="{ toggleClass, toggle }">
-            <DropdownTrigger class="btn btn-outline-secondary" :class="toggleClass" type="button" @click="toggle">Filter</DropdownTrigger>
-        </template>
-        <template v-slot:menu="{ toggle }">
-            <DropdownItem v-for="(value, key) in filterItems" :key="key" href="#" @click.prevent="toggle">{{ value }}</DropdownItem>
-        </template>
-    </Dropdown>
-</template>

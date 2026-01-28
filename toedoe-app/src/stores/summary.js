@@ -5,9 +5,8 @@ import { taskSummary } from "../http/summary-api.js"
 export const useSummaryStore = defineStore("summaryStore", () => {
     const summaries = ref([])
 
-
-    const fetchTaskSummary = async () => {
-        const { data } = await taskSummary()
+    const fetchTaskSummary = async (params = {}) => {
+        const { data } = await taskSummary(params)
         summaries.value = data
 
     }

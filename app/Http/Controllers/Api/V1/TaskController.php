@@ -16,7 +16,12 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return Task::all()->toResourceCollection();
+        return request()->user()
+            ->tasks()
+            ->handleSort(request()->query('sort_by') ?? 'time')
+            ->with('priority')
+            ->get()
+            ->toResourceCollection();
     }
 
     /**
@@ -25,6 +30,8 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         $task = Task::create($request->validated());
+
+        $task->load('priority');
 
         return $task->toResource();
     }
@@ -36,6 +43,7 @@ class TaskController extends Controller
     {
 //        return new TaskResource($task); posso fazer assim
 //        return TaskResource::make($task); //ou assim de forma estática, ambas são validas trazem o mesmo resultado
+        $task->load('priority');
         return $task->toResource(); //assim é de forma mais simples a partir do laravel 12
     }
 
@@ -45,6 +53,8 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         $task->update($request->validated());
+
+        $task->load('priority');
 
         return $task->toResource();
     }

@@ -44,7 +44,10 @@ class TaskController extends Controller
         }
 //        $task = Task::create($request->validated() + ['user_id' => $request->user()->id]);
         $task = $request->user()->tasks()->create($request->validated());
-        return $task->toResource();
+
+        $task->load('priority');
+
+        return TaskResource::make($task);
     }
 
     /**
@@ -57,6 +60,8 @@ class TaskController extends Controller
         if ($request->user()->cannot('view', $task)) {
             abort(403);
         }
+        $task->load('priority');
+
 //        return new TaskResource($task); posso fazer assim
 //        return TaskResource::make($task); //ou assim de forma estática, ambas são validas trazem o mesmo resultado
         return $task->toResource(); //assim é de forma mais simples a partir do laravel 12

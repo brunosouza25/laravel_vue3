@@ -4,7 +4,7 @@
             class="d-flex justify-content-start align-items-center"
         >
             <input
-                class="form-check-input mt-0" :class="completedClass"
+                class="form-check-input mt-0" :class="[completedClass, priorityClass]"
                 type="checkbox" :checked="task.is_completed"
                 @change="markTaskAsCompleted"
             />
@@ -65,8 +65,32 @@ const removeTask = () => {
         emit("removed", props.task)
     }
 }
+
+const priorityClass = computed(() =>
+    props.task.priority === null ?
+        "priority-none" :
+        `priority-${props.task.priority.name}`
+);
 </script>
-
 <style scoped>
-
+.form-check-input:checked {
+    background-color: rgb(108,117,125);
+    border-color: rgb(108,117,125);
+}
+.form-check-input:not(:checked) {
+    outline: 0;
+    border: 0;
+}
+.priority-high:not(:checked) {
+    box-shadow: 0 0 0 0.1rem rgb(220,53,69) !important;
+}
+.priority-medium:not(:checked) {
+    box-shadow: 0 0 0 0.1rem rgb(255,193,7) !important;
+}
+.priority-low:not(:checked) {
+    box-shadow: 0 0 0 0.1rem rgb(13,110,253) !important;
+}
+.priority-none:not(:checked) {
+    box-shadow: 0 0 0 0.1rem rgba(0,0,0,.25) !important;
+}
 </style>

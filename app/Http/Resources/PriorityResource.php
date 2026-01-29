@@ -17,9 +17,7 @@ class PriorityResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->description,
-            // 'priority' => PriorityResource::make($this->priority)
-            'priority' => PriorityResource::make($this->whenLoaded('priority'))
+            'description' => $this->description
         ];
     }
 }

@@ -21,9 +21,17 @@ class TaskController extends Controller
             abort(403);
         }
 
+        return request()->user()
+            ->tasks()
+            ->handleSort(request()->query('sort_by') ?? 'time')
+            ->with('priority')
+            ->get()
+            ->toResourceCollection();
+
 //        return TaskResource::collection(Task::all());
 //        return Task::all()->toResourceCollection();
-        return request()->user()->tasks()->get()->toResourceCollection();
+
+//        return request()->user()->tasks()->get()->toResourceCollection();
     }
 
     /**

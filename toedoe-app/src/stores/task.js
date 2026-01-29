@@ -12,9 +12,9 @@ export const useTaskStore = defineStore("taskStore", () => {
         tasks.value.unshift(createdTask.data)
     }
 
-    const  fetchAllTasks = async() => {
-        const{ data } = await allTasks()
-        tasks.value = data.data
+    const fetchAllTasks = async (params = {}) => {
+        const { data } = await allTasks(params);
+        tasks.value = data.data;
     }
 
     const handleUpdatedTask = async (task) => {

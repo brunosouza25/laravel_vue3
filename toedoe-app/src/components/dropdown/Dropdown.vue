@@ -22,7 +22,7 @@ const handleClickOutside = () => {
 
 const menuStyles = computed(() => {
     return {
-        position: 'absolute', 
+        position: 'absolute',
         inset: '0px auto auto 0px',
         margin: '0px',
         transform: 'translate(0px, 40px)'

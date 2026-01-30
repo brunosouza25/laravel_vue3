@@ -6,8 +6,10 @@
                     <!-- Task order -->
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h3 class="text-body mb-0">Tasks</h3>
-                        <SortTasks />
-                    </div>
+                        <div class="d-flex">
+                            <FilterTasks class="me-2" />
+                            <SortTasks />
+                        </div>                    </div>
                     <!-- Add new Task -->
                     <NewTask />
                     <!-- List of uncompleted tasks -->
@@ -31,13 +33,14 @@
     </main>
 </template>
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
-import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 import { useTaskStore } from "../stores/task.js"
+import { computed, onMounted, ref, watch } from "vue";
 import Tasks from "../components/tasks/Tasks.vue"
 import NewTask from "../components/tasks/NewTask.vue"
 import SortTasks from "../components/tasks/SortTasks.vue";
+import FilterTasks from "@/components/tasks/FilterTasks.vue";
 
 const route = useRoute();
 const store = useTaskStore();

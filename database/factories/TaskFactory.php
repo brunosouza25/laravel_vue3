@@ -46,10 +46,10 @@ class TaskFactory extends Factory
     }
     public function withRandomDueDate(): static
     {
-        return $this->state(fn (array $attributes) => [
-            "due_date" => rand(0, 1) === 0
-                ? NULL
-                : fake()->dateTimeBetween("-1 week", "+1 week")
+        return $this->state(fn () => [
+            'due_date' => rand(0, 1) === 0
+                ? null
+                    : fake()->dateTimeBetween('-1 week', '+1 week'),
         ]);
     }
 }

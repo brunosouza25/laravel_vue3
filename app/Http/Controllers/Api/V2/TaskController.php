@@ -24,6 +24,7 @@ class TaskController extends Controller
         return request()->user()
             ->tasks()
             ->handleSort(request()->query('sort_by') ?? 'time')
+            ->handleFilter(request()->query('due_date'))
             ->with('priority')
             ->get()
             ->toResourceCollection();

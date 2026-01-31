@@ -7,10 +7,15 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Services\TaskInputParser;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    public function __construct(protected TaskInputParser $parser)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -38,17 +43,33 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+//    public function store(StoreTaskRequest $request)
+//    {
+//        if ($request->user()->cannot('create', Task::class)) {
+//            abort(403);
+//        }
+////        $task = Task::create($request->validated() + ['user_id' => $request->user()->id]);
+//        $task = $request->user()->tasks()->create($request->validated());
+//
+//        $task->load('priority');
+//
+//        return TaskResource::make($task);
+//    }
+
     public function store(StoreTaskRequest $request)
     {
         if ($request->user()->cannot('create', Task::class)) {
             abort(403);
         }
-//        $task = Task::create($request->validated() + ['user_id' => $request->user()->id]);
-        $task = $request->user()->tasks()->create($request->validated());
+
+        $data = $request->validated();
+        $task = $request->user()->tasks()->create(
+            $this->prepareData($data)
+        );
 
         $task->load('priority');
 
-        return TaskResource::make($task);
+        return $task->toResource();
     }
 
     /**
@@ -71,13 +92,16 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task, TaskInputParser $parser)
     {
         if ($request->user()->cannot('update', $task)) {
             abort(403);
         }
 
-        $task->update($request->validated());
+        $task->update(
+            $this->prepareData($request->validated())
+        );
+        $task->load('priority');
 
         return $task->toResource();
     }
@@ -95,4 +119,16 @@ class TaskController extends Controller
 
         return response()->noContent();
     }
+
+    private function prepareData(array $data): array
+    {
+        $parsed = $this->parser->parse($data['name']);
+        if ($parsed) {
+            $data['name'] = $parsed['name'];
+            $data['priority_id'] = $data['priority_id'] ?? ($parsed['priority_id'] ?? null);
+            $data['due_date'] = $data['due_date'] ?? ($parsed['due_date'] ?? null);
+        }
+        return $data;
+    }
+
 }

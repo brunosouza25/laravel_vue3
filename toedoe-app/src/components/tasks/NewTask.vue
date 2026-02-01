@@ -10,30 +10,52 @@
                     type="text"
                     class="form-control form-control-lg padding-right-lg task-input"
                     placeholder="+ Add new task. Press enter to save."
-                    spellcheck="false"
                     @keydown.enter="addNewTask"
+                    spellcheck="false"
                     v-model="taskInput"
-                    ref="inputRef"
                     @scroll="syncScroll"
+                    ref="inputRef"
                 />
+                <div class="action-buttons">
+                    <SelectPriority @change="setPriority" />
+                    <button class="btn btn-sm btn-light" @click="togglePopover" type="button" title="Set due date">
+                        <IconCalendar />
+                    </button>
+                </div>
             </div>
         </template>
-
     </DatePicker>
 </template>
-
 <script setup>
-import { reactive, ref, computed } from "vue"
-import { useTaskStore } from "../../stores/task.js"
-import SelectPriority from "./SelectPriority.vue";
-import { DatePicker } from "v-calendar";
-import 'v-calendar/style.css';
-import IconCalendar from "@/components/icons/IconCalendar.vue";
+import { reactive, ref, computed } from "vue";
+import { useTaskStore } from "../../stores/task";
 import { useFocusInput } from "../../composables/useFocusInput";
 import { useDateFormatter } from "../../composables/useDateFormatter";
+import SelectPriority from "./SelectPriority.vue";
+import IconCalendar from "../icons/IconCalendar.vue";
+import { DatePicker } from "v-calendar";
+import 'v-calendar/style.css';
 
+const store = useTaskStore();
+const { handleAddedTask } = store;
+
+const newTask = reactive({
+    name: "",
+    is_completed: false,
+    priority_id: null,
+    due_date: null,
+});
+
+const inputRef = ref();
 const highlighterRef = ref();
 const taskInput = ref('');
+const { focusInput } = useFocusInput(inputRef);
+const { formatDateLocal } = useDateFormatter();
+
+const setPriority = (id) => {
+    newTask.priority_id = id;
+    focusInput();
+};
 
 const syncScroll = (event) => {
     if (highlighterRef.value) {
@@ -56,19 +78,6 @@ const highlightedText = computed(() => {
 
     return text;
 })
-const inputRef = ref()
-
-
-const { focusInput } = useFocusInput(inputRef);
-const { formatDateLocal } = useDateFormatter();
-const store = useTaskStore();
-const { handleAddedTask } = store
-const newTask = reactive({
-    name: "",
-    is_completed: false,
-    priority_id: null,
-    due_date: null,
-});
 
 const addNewTask = async (event) => {
     if (taskInput.value.trim()) {
@@ -78,34 +87,10 @@ const addNewTask = async (event) => {
         await handleAddedTask(newTask);
     }
 };
-
-
-const setPriority = (id) => {
-    newTask.priority_id = id;
-    inputRef.value.focus();
-};
-
-const onDateSelected = () => {
-    nextTick(() => {
-        inputRef.value?.focus();
-    });
-};
-
-
-
 </script>
 <style>
 .relative {
     position: relative;
-}
-
-.select-priority {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 10px;
-    padding-left: 10px;
-    z-index: 999;
 }
 
 .action-buttons {
@@ -119,11 +104,7 @@ const onDateSelected = () => {
     align-items: center;
     gap: 5px;
 }
-
-
-
 </style>
-
 <style scoped>
 .input-highlighter {
     position: absolute;
@@ -188,5 +169,4 @@ const onDateSelected = () => {
     border-radius: 2px;
     padding: 0;
 }
-
 </style>

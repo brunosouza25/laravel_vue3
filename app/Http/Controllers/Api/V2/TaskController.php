@@ -123,6 +123,9 @@ class TaskController extends Controller
     private function prepareData(array $data): array
     {
         $parsed = $this->parser->parse($data['name']);
+        if ($parsed === null) {
+            abort(422, 'Task name is required');
+        }
         if ($parsed) {
             $data['name'] = $parsed['name'];
             $data['priority_id'] = $data['priority_id'] ?? ($parsed['priority_id'] ?? null);
